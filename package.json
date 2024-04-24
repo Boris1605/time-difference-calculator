@@ -5,7 +5,10 @@
   "packageManager": "pnpm@9.0.4+sha256.caa915eaae9d9aefccf50ee8aeda25a2f8684d8f9d5c6e367eaf176d97c1f89e",
   "dependencies": {
     "@upleveled/react-scripts": "5.0.13",
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.5.45",
     "react": "^18.2.0",
+    "react-country-region-selector": "^3.6.1",
     "react-dom": "^18.2.0",
     "sass": "1.75.0"
   },
