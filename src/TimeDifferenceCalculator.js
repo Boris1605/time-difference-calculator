@@ -3,14 +3,19 @@ import { format, toZonedTime } from 'date-fns-tz';
 import React, { useEffect, useState } from 'react';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
+// Define the TimeDifferenceCalculator component
 export default function TimeDifferenceCalculator() {
+  // Define state variables for country, region, and locations
   const [country, setCountry] = useState('');
   const [region, setRegion] = useState('');
   const [locations, setLocations] = useState([]);
 
+  // Function to add a location
   const handleAddLocation = async () => {
+    // Check if both country and region are selected
     if (country && region) {
       const locationName = `${region}, ${country}`;
+      // Add the location with its time difference to the locations array
       setLocations([
         ...locations,
         {
@@ -18,15 +23,19 @@ export default function TimeDifferenceCalculator() {
           timeDifference: await getTimeDifference(country, region),
         },
       ]);
+      // Clear the country and region inputs after adding the location
       setCountry('');
       setRegion('');
     }
   };
 
+  // Function to remove a location
   const handleRemoveLocation = (index) => {
+    // Remove the location at the specified index from the locations array
     setLocations(locations.filter((_, i) => i !== index));
   };
 
+  // Function to fetch time difference based on country and region
   const getTimeDifference = async (country, region) => {
     console.log('Calculating time difference for:', country, region);
     let locationTimezone;
@@ -39,12 +48,14 @@ export default function TimeDifferenceCalculator() {
     console.log('aaa', coordinates);
     if (coordinates) {
       const [lon, lat] = coordinates;
+      // Fetch location by coordinates to determine timezone
       const timeDifference = await fetchLocationByCoordinates(lat, lon);
       console.log('timezone,', timeDifference);
       return timeDifference;
     }
   };
 
+  // Function to fetch location details by coordinates
   const fetchLocationByCoordinates = async (latitude, longitude) => {
     try {
       const response = await fetch(
@@ -54,10 +65,10 @@ export default function TimeDifferenceCalculator() {
       const timezone = data.localityInfo?.informative?.find(
         (obj) => obj.description === 'time zone',
       )?.name;
-      console.log('TZ jebeni', timezone);
+      console.log('TZ', timezone);
 
       const currentTime = new Date();
-      console.log('nase', currentTime.toString());
+      console.log('our', currentTime.toString());
 
       // Get the time in the specified location
       const locationTime = toZonedTime(new Date(), timezone);
@@ -66,14 +77,7 @@ export default function TimeDifferenceCalculator() {
       // Calculate the time difference
       const diff = differenceInHours(locationTime, currentTime);
 
-      console.log('diuff', diff);
-
-      // Format the time difference
-      // const hoursDiff = diff.hours();
-      // const minutesDiff = diff.minutes();
-
-      // Determine if the time in the location is ahead or behind the user's current time
-      // const direction = diff.asSeconds() < 0 ? 'behind' : 'ahead';
+      console.log('diff', diff);
 
       return diff;
     } catch (error) {
@@ -107,6 +111,7 @@ export default function TimeDifferenceCalculator() {
       </div>
       <br />
       <div>
+        {/* Display locations and their time differences */}
         <table className="text-center table-auto">
           <tbody>
             <tr>
