@@ -1,0 +1,74 @@
+1. Initialize state variables:
+   - locationInput: an array to store user-inputted locations
+   - timeDifferences: an array to store calculated time differences
+
+2. Create a component with:
+   - Input field to enter locations
+   - Button to add entered location to the list
+   - List to display entered locations
+   - Functionality to remove locations from the list
+   - Button to calculate time differences
+   - Display area for showing time differences
+
+3. Define functions:
+   - handleChangeLocationInput(event): Updates locationInput state as the user types
+   - handleAddLocation(): Adds locationInput to the location list
+   - handleRemoveLocation(index): Removes a location from the list based on its index
+   - calculateTimeDifferences(): Calculates time differences for each location
+   - getTimeDifference(location): Calculates time difference between location and reference time
+
+4. Implement handleChangeLocationInput(event):
+   - Update locationInput state with the event target value
+
+5. Implement handleAddLocation():
+   - Append locationInput to location list
+   - Clear locationInput field
+
+6. Implement handleRemoveLocation(index):
+   - Remove the location at the given index from the location list
+
+7. Implement calculateTimeDifferences():
+   - Loop through each location in the list
+   - Call getTimeDifference(location) for each location and push the result to timeDifferences array
+   - Update state with timeDifferences
+
+8. Implement getTimeDifference(location):
+   - Fetch the timezone of the location using an API (e.g., Moment Timezone API)
+   - Calculate the time difference between the location's timezone and the reference time zone
+   - Return the formatted time difference
+
+9. Render:
+   - Input field for location input
+   - Button to add location
+   - List of entered locations with remove buttons
+   - Button to calculate time differences
+   - Display area for showing calculated time differences
+
+
+function calculateTimeDifference(locations, referenceTime) {
+const referenceMoment = moment(referenceTime);
+const timeDifferences = {};
+
+    locations.forEach(location => {
+        try {
+            const locationMoment = referenceMoment.clone().tz(location);
+            const difference = moment.duration(locationMoment.diff(referenceMoment));
+            timeDifferences[location] = difference;
+        } catch (error) {
+            console.error(`Time zone not found for ${location}`);
+        }
+    });
+
+    return timeDifferences;
+
+}
+
+// Example usage
+const locations = ["America/New_York", "Europe/London", "Asia/Tokyo"];
+const referenceTime = new Date();
+
+const timeDifferences = calculateTimeDifference(locations, referenceTime);
+
+for (const location in timeDifferences) {
+console.log(`${location}: ${timeDifferences[location].humanize()}`);
+}
