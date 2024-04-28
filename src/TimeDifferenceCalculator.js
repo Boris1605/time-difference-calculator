@@ -7,7 +7,6 @@ export default function TimeDifferenceCalculator() {
   const [country, setCountry] = useState('');
   const [region, setRegion] = useState('');
   const [locations, setLocations] = useState([]);
-  console.log('qeqwe', locations);
 
   const handleAddLocation = async () => {
     if (country && region) {
@@ -83,36 +82,57 @@ export default function TimeDifferenceCalculator() {
   };
 
   return (
-    <div>
-      <h1>Time difference calculator</h1>
-      <i>NOTE: All Time differences are related to your local time!</i>
-      <br />
+    <div className="p-5 my-5 text-xl mt-10">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold">Time difference calculator</h1>
+        <i>NOTE: All Time differences are related to your local time!</i>
+        <br />
+        <br />
+        <div className="select select-bordered mt-5">
+          <CountryDropdown
+            value={country}
+            onChange={(val) => setCountry(val)}
+          />
+        </div>
+        <div className="select select-bordered">
+          <RegionDropdown
+            country={country}
+            value={region}
+            onChange={(val) => setRegion(val)}
+          />
+        </div>
+        <button className="btn ml-11" onClick={handleAddLocation}>
+          Add Location
+        </button>
+      </div>
       <br />
       <div>
-        <CountryDropdown value={country} onChange={(val) => setCountry(val)} />
-        <RegionDropdown
-          country={country}
-          value={region}
-          onChange={(val) => setRegion(val)}
-        />
+        <table className="text-center table-auto">
+          <tbody>
+            <tr>
+              {locations.map((location, index) => (
+                <li className="text-left ml-96" key={index}>
+                  {location.locationName} is{' '}
+                  {location.timeDifference === 0
+                    ? ''
+                    : `${Math.abs(location.timeDifference)} hours`}{' '}
+                  {String(location.timeDifference).startsWith('-')
+                    ? 'behind'
+                    : location.timeDifference === 0
+                    ? 'same time as your local time'
+                    : 'ahead'}{' '}
+                  <button
+                    className="btn ml-2"
+                    onClick={() => handleRemoveLocation(index)}
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <button onClick={handleAddLocation}>Add Location</button>
-      <ul>
-        {locations.map((location, index) => (
-          <li key={index}>
-            {location.locationName} is{' '}
-            {location.timeDifference === 0
-              ? ''
-              : `${Math.abs(location.timeDifference)} hours`}{' '}
-            {String(location.timeDifference).startsWith('-')
-              ? 'behind'
-              : location.timeDifference === 0
-              ? 'same time as your local time'
-              : 'ahead'}{' '}
-            <button onClick={() => handleRemoveLocation(index)}>Remove</button>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
