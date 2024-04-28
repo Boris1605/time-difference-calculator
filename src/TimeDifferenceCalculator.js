@@ -3,8 +3,6 @@ import { format, toZonedTime } from 'date-fns-tz';
 import React, { useEffect, useState } from 'react';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
-const API_KEY = '71b963a6b8a348ceb04d371dfeb2c29d';
-
 export default function TimeDifferenceCalculator() {
   const [country, setCountry] = useState('');
   const [region, setRegion] = useState('');
@@ -34,7 +32,7 @@ export default function TimeDifferenceCalculator() {
     console.log('Calculating time difference for:', country, region);
     let locationTimezone;
     const response = await fetch(
-      `https://api.geoapify.com/v1/geocode/search?country=${country}&state=${region}&apiKey=${API_KEY}`,
+      `https://api.geoapify.com/v1/geocode/search?country=${country}&state=${region}&apiKey=${process.env.REACT_APP_API_KEY}`,
     );
 
     const data = await response.json();
@@ -86,6 +84,10 @@ export default function TimeDifferenceCalculator() {
 
   return (
     <div>
+      <h1>Time difference calculator</h1>
+      <i>NOTE: All Time differences are related to your local time!</i>
+      <br />
+      <br />
       <div>
         <CountryDropdown value={country} onChange={(val) => setCountry(val)} />
         <RegionDropdown
@@ -98,10 +100,15 @@ export default function TimeDifferenceCalculator() {
       <ul>
         {locations.map((location, index) => (
           <li key={index}>
-            {location.locationName} is {Math.abs(location.timeDifference)} hours{' '}
+            {location.locationName} is{' '}
+            {location.timeDifference === 0
+              ? ''
+              : `${Math.abs(location.timeDifference)} hours`}{' '}
             {String(location.timeDifference).startsWith('-')
               ? 'behind'
-              : 'ahead'}
+              : location.timeDifference === 0
+              ? 'same time as your local time'
+              : 'ahead'}{' '}
             <button onClick={() => handleRemoveLocation(index)}>Remove</button>
           </li>
         ))}
