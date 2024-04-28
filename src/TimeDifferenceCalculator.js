@@ -110,14 +110,14 @@ export default function TimeDifferenceCalculator() {
         </button>
       </div>
       <br />
-      <div>
+      <div className="ml-[376px]">
         {/* Display locations and their time differences */}
         <table className="text-center table-auto">
           <tbody>
-            <tr>
-              {locations.map((location, index) => (
-                <li className="text-left ml-96" key={index}>
-                  {location.locationName} is{' '}
+            {locations.map((location, index) => (
+              <tr key={index} className="mt-4">
+                <td className="text-left pr-8">
+                  &#8226; {location.locationName} is{' '}
                   {location.timeDifference === 0
                     ? ''
                     : `${Math.abs(location.timeDifference)} hours`}{' '}
@@ -126,15 +126,17 @@ export default function TimeDifferenceCalculator() {
                     : location.timeDifference === 0
                     ? 'same time as your local time'
                     : 'ahead'}{' '}
+                </td>
+                <td className="text-right">
                   <button
-                    className="btn ml-2"
+                    className="btn btn-sm"
                     onClick={() => handleRemoveLocation(index)}
                   >
                     Remove
                   </button>
-                </li>
-              ))}
-            </tr>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
