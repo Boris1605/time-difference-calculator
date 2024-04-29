@@ -87,7 +87,7 @@ export default function TimeDifferenceCalculator() {
     <div className="p-5 my-5 text-xl mt-10 mr-1">
       <div className="text-center">
         <h1 className="text-2xl font-bold">Time difference calculator</h1>
-        <i>NOTE: All Time differences are related to your local time!</i>
+        <i>All Time differences are related to your local time!</i>
         <br />
         <br />
         <div className="select select-bordered mt-5">
@@ -116,7 +116,7 @@ export default function TimeDifferenceCalculator() {
         <table className="text-center table-auto">
           <tbody>
             {locations.map((location, index) => (
-              <tr key={index} className="mt-4">
+              <tr key={index} className="mt-8">
                 <td className="text-left pr-8">
                   &#8226; {location.locationName} is{' '}
                   {location.timeDifference === 0
