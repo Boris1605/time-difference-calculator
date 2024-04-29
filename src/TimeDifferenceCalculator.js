@@ -90,34 +90,29 @@ export default function TimeDifferenceCalculator() {
         <i>All Time differences are related to your local time!</i>
         <br />
         <br />
-        <div className="select select-bordered mt-5">
-          <CountryDropdown
-            value={country}
-            onChange={(val) => setCountry(val)}
-            style={{ border: 'none' }}
-            className="custom-select-style"
-          />
-        </div>
-        <div className="select select-bordered">
-          <RegionDropdown
-            country={country}
-            value={region}
-            onChange={(val) => setRegion(val)}
-            className="custom-select-style"
-          />
-        </div>
+        <CountryDropdown
+          value={country}
+          onChange={(val) => setCountry(val)}
+          className="select select-bordered mt-5"
+        />
+        <RegionDropdown
+          country={country}
+          value={region}
+          onChange={(val) => setRegion(val)}
+          className="select select-bordered ml-4"
+        />
         <button className="btn ml-11" onClick={handleAddLocation}>
           Add Location
         </button>
       </div>
       <br />
-      <div className="ml-[376px]">
+      <div className="">
         {/* Display locations and their time differences */}
-        <table className="text-center table-auto">
+        <table className="text-center table-auto my-0 mx-auto">
           <tbody>
             {locations.map((location, index) => (
               <tr key={index} className="mt-8">
-                <td className="text-left pr-8">
+                <td className="pr-8 text-left">
                   &#8226; {location.locationName} is{' '}
                   {location.timeDifference === 0
                     ? ''
@@ -128,7 +123,7 @@ export default function TimeDifferenceCalculator() {
                     ? 'same time as your local time'
                     : 'ahead'}{' '}
                 </td>
-                <td className="text-right">
+                <td className="">
                   <button
                     className="btn btn-square"
                     onClick={() => handleRemoveLocation(index)}
