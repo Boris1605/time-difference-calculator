@@ -47,7 +47,7 @@ export default function TimeDifferenceCalculator() {
     if (coordinates) {
       const [lon, lat] = coordinates;
       // Fetch location by coordinates to determine timezone
-      const timeDifference = await fetchLocationByCoordinatesAndTimedifference(
+      const timeDifference = await fetchLocationByCoordinatesAndTimeDifference(
         lat,
         lon,
       );
@@ -55,8 +55,8 @@ export default function TimeDifferenceCalculator() {
     }
   };
 
-  // Function to fetch location details by coordinates
-  const fetchLocationByCoordinatesAndTimedifference = async (
+  // Function to fetch location details by coordinates an time difference
+  const fetchLocationByCoordinatesAndTimeDifference = async (
     latitude,
     longitude,
   ) => {
