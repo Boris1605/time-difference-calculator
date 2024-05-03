@@ -47,6 +47,8 @@ export default function TimeDifferenceCalculator() {
       const timezone = await getTimezoneFromCoordinates(lat, lon);
       const timeDifference = calculateTimeDifference(timezone);
       return timeDifference;
+    } else {
+      alert('Coordinates for the provided country and region not found');
     }
   };
 
@@ -62,7 +64,7 @@ export default function TimeDifferenceCalculator() {
       )?.name;
       return timezone;
     } catch (error) {
-      console.error('Error fetching location by coordinates:', error.message);
+      alert('Error fetching location by coordinates' + error.message);
     }
   };
 
