@@ -1,6 +1,6 @@
 import { differenceInHours } from 'date-fns';
-import { format, toZonedTime } from 'date-fns-tz';
-import React, { useEffect, useState } from 'react';
+import { toZonedTime } from 'date-fns-tz';
+import React, { useState } from 'react';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
 // Define the TimeDifferenceCalculator component
