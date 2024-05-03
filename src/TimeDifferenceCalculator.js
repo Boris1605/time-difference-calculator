@@ -12,21 +12,18 @@ export default function TimeDifferenceCalculator() {
 
   // Function to add a location
   const handleAddLocation = async () => {
-    // Check if both country and region are selected
-    if (country && region) {
-      const locationName = `${region}, ${country}`;
-      // Add the location with its time difference to the locations array
-      setLocations([
-        ...locations,
-        {
-          locationName,
-          timeDifference: await getTimeDifference(country, region),
-        },
-      ]);
-      // Clear the country and region inputs after adding the location
-      setCountry('');
-      setRegion('');
-    }
+    const locationName = `${region}, ${country}`;
+    // Add the location with its time difference to the locations array
+    setLocations([
+      ...locations,
+      {
+        locationName,
+        timeDifference: await getTimeDifference(country, region),
+      },
+    ]);
+    // Clear the country and region inputs after adding the location
+    setCountry('');
+    setRegion('');
   };
 
   // Function to remove a location
@@ -47,16 +44,14 @@ export default function TimeDifferenceCalculator() {
     if (coordinates) {
       const [lon, lat] = coordinates;
       // Fetch location by coordinates to determine timezone
-      const timeDifference = await fetchLocationByCoordinatesAndTimeDifference(
-        lat,
-        lon,
-      );
+      const timeDifference =
+        await fetchLocationByCoordinatesAndGetTimeDifference(lat, lon);
       return timeDifference;
     }
   };
 
   // Function to fetch location details by coordinates an time difference
-  const fetchLocationByCoordinatesAndTimeDifference = async (
+  const fetchLocationByCoordinatesAndGetTimeDifference = async (
     latitude,
     longitude,
   ) => {
@@ -101,7 +96,11 @@ export default function TimeDifferenceCalculator() {
           onChange={(val) => setRegion(val)}
           className="select select-bordered ml-4"
         />
-        <button className="btn ml-11" onClick={handleAddLocation}>
+        <button
+          className="btn ml-11"
+          onClick={handleAddLocation}
+          disabled={!country || !region}
+        >
           Add Location
         </button>
       </div>
@@ -125,7 +124,7 @@ export default function TimeDifferenceCalculator() {
                 </td>
                 <td className="">
                   <button
-                    className="btn btn-square"
+                    className="btn btn-square mt-1"
                     onClick={() => handleRemoveLocation(index)}
                   >
                     <svg
