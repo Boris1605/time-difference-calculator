@@ -44,17 +44,14 @@ export default function TimeDifferenceCalculator() {
     if (coordinates) {
       const [lon, lat] = coordinates;
       // Fetch location by coordinates to determine timezone
-      const timeDifference =
-        await fetchLocationByCoordinatesAndGetTimeDifference(lat, lon);
+      const timezone = await getTimezoneFromCoordinates(lat, lon);
+      const timeDifference = calculateTimeDifference(timezone);
       return timeDifference;
     }
   };
 
   // Function to fetch location details by coordinates an time difference
-  const fetchLocationByCoordinatesAndGetTimeDifference = async (
-    latitude,
-    longitude,
-  ) => {
+  const getTimezoneFromCoordinates = async (latitude, longitude) => {
     try {
       const response = await fetch(
         `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
@@ -63,19 +60,22 @@ export default function TimeDifferenceCalculator() {
       const timezone = data.localityInfo?.informative?.find(
         (obj) => obj.description === 'time zone',
       )?.name;
-
-      const currentTime = new Date();
-
-      // Get the time in the specified location
-      const locationTime = toZonedTime(new Date(), timezone);
-
-      // Calculate the time difference
-      const diff = differenceInHours(locationTime, currentTime);
-
-      return diff;
+      return timezone;
     } catch (error) {
       console.error('Error fetching location by coordinates:', error.message);
     }
+  };
+
+  const calculateTimeDifference = (timezone) => {
+    const currentTime = new Date();
+
+    // Get the time in the specified location
+    const locationTime = toZonedTime(new Date(), timezone);
+
+    // Calculate the time difference
+    const diff = differenceInHours(locationTime, currentTime);
+
+    return diff;
   };
 
   return (
